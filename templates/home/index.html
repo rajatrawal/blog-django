@@ -1,0 +1,42 @@
+{% extends "home/basic.html" %}
+{% block title %}Home{% endblock %}
+{% block body %}
+<div class="container my-4">
+    <div class="p-4 p-md-5 mb-4 text-white rounded bg-dark ">
+        <div class="col-md-6 px-0">
+            <h1 class="display-4 ">Welcome to iCoder</h1>
+            <p class="lead my-3">Let explore Content.</p>
+            <button class="btn btn-primary">Exploer</button>
+        </div>
+    </div>
+    <h1>Popular Blogs</h1>
+    <div class="container my-3">
+        {% for blog in blogs %}
+        <div class=" my-3" id="blogDiv{{blog.id}}">
+            <div class="card">  
+                <div class="card-header">
+                    Popular
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">{{blog.title|title}}</h5>
+                    <div class="preview my-3"><p class="card-text">{{blog.content|slice:"0:300"|safe}}...</p></div>
+                    <a href="/blog/blogPost/{{blog.id}}" class="btn btn-primary">Read More</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+{% block js  %}
+<script>
+    let divs=document.getElementsByClassName("preview");
+for (i in divs){
+    divs[i].innerHTML=divs[i].innerText;
+}
+
+</script>
+{% endblock js     %}
+{% block homeactive %}
+active
+{% endblock homeactive %}

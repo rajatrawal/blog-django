@@ -1,0 +1,45 @@
+{% extends "home/basic.html" %}
+
+{% block title %}Home{% endblock %}
+{% block body %}
+<div class="container my-4">
+    <h1>{{text}}</h1>
+    {% for blog in blogs %}
+    <div class=" my-3" id="blogDiv{{blog.id}}">
+        <div class="card">  
+            <div class="card-header">
+                Popular
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">{{blog.title|title}}</h5>
+                <div class="preview my-3"><p class="card-text">{{blog.content|slice:"0:300"|safe}}...</p></div>
+                <a href="/blog/blogPost/{{blog.id}}" class="btn btn-primary">Read More</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% block blogacative %}
+active
+{% endblock blogacative %}
+
+{% block js %}
+<script>
+{% for blog in blogs %}
+document.getElementById("blogDiv{{blog.id}}").addEventListener("click",()=>{
+    window.location="/blog/blogPost/{{blog.id}}";
+
+})
+{% endfor %}
+
+let divs=document.getElementsByClassName("preview");
+for (i in divs){
+    divs[i].innerHTML=divs[i].innerText;
+}
+
+
+
+</script>
+{% endblock  %}

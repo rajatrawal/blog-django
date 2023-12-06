@@ -1,0 +1,39 @@
+{% extends "home/basic.html" %}
+
+{% block body %}
+<div class="container">
+  <form action="/contact/" method="POST">{% csrf_token %}
+    <h3 class="my-4">Contact Us</h3>
+    <div class="input-group mb-3">
+      <span class="input-group-text" id="nameSpn">Name</span>
+      <input type="text" class="form-control" id="name" aria-describedby="basic-addon3" name="name"
+        placeholder="Enter Your Name Hear">
+    </div>
+    <div class="input-group mb-3">
+      <span class="input-group-text" id="emailSpn">@</span>
+      <input type="email" class="form-control" placeholder="Enter Your Email Hear" name="email"
+        aria-describedby="email">
+    </div>
+    <div class="input-group mb-3">
+      <span class="input-group-text" id="telSpn">+91</span>
+      <input type="tel" class="form-control" placeholder="Enter Your Phone Number Hear" name="phone"
+        aria-describedby="tel">
+    </div>
+    <div class="input-group">
+      <span class="input-group-text" id="textareaSpn">Text</span>
+      <textarea class="form-control" placeholder="Enter Your Text" id="textarea" rows="4" name="text"></textarea>
+    </div>
+    <button type="submit" class="btn btn-outline-dark my-3" id="submitBtn">Submit</button>
+  </form>
+</div>
+
+
+{% endblock %}
+
+{% block js %}
+
+{% endblock %}
+
+{% block contactactive %}
+active
+{% endblock contactactive %}

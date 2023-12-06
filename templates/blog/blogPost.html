@@ -1,0 +1,104 @@
+{% extends 'home/basic.html' %}
+{% block body %}
+{% load humanize %}
+{% load extras %}
+<div class="container my-3">
+    <h2> {{blog.title|title}}</h2>
+    <p class="blog-post-meta">{{blog.time_stamp}} By <a href="/about/">{{blog.author|title}} </a> 
+    </p> <span>{{blog.views}} Views</span><br>
+    <p style="font-size: 25px;">{{blog.content|safe}}</p>
+    <br>
+    <p style="font-size: 19px;" align="right">--{{blog.author}}</p>
+
+</div>
+<br>
+<div class="container my-4">
+    <h4 class="my-4">Comments <span>( {{comments|length}} )</span></h4>
+    {% if user.is_authenticated %}
+    <div>
+        <form action="{% url 'postComment' %}" method="POST">{%csrf_token%}
+            <h6>Add Your Comment</h6>
+            <div class="card card-body  my-3 mx-3">
+                <div class="container form-floating ">
+                    <textarea class="form-control" placeholder="Leave a comment here" id="comment" name="comment"
+                        style="height: 100px" name="comment"></textarea>
+                    <label for="floatingTextarea2">Add Your Comment</label>
+                </div>
+                <div>
+                    <button type="submit" class="btn btn-primary mt-3 mx-3">Submit</button>
+                </div>
+            </div>
+            <input type="hidden" value="{{blog.id}}" name="postId">
+            <input type="hidden" value="" name="parentSno">
+        </form>
+    </div>
+    {% else %}
+    <h5>Please Login To Post A Comment</h5>
+    {% endif %}
+    <br>
+    {% load static %}
+    {% for comment in comments %}
+    <div class="row my-3">
+        <div class=" col-md-2">
+            <img src="/static/img/user.png" class="rounded mx-auto d-block w-100 p-4 " alt="user">
+        </div>
+        <div class="col-md-10">
+            <p> <b class="mx-2" style="font-family:Arial, Helvetica, sans-serif; font-size: larger;">By
+                    {{comment.user|title}}</b> {{comment.time_stamp|naturaltime }}</p>
+            <div
+                style="border: 1px solid rgb(218, 218, 218); border-radius: 5px; background-color: rgb(230, 230, 230); padding: 5px;">
+                <p style="margin-left: 10px;">{{comment.Comment|slice:"0:1"|title}}{{comment.Comment|slice:"1:"}}
+                </p>
+            </div>
+            <div class="my-3">
+                <div id="replayDiv{{comment.id}}" class="my-2">
+
+                    <a data-bs-toggle="collapse" href="#replay{{comment.id}}" role="button" aria-expanded="false"
+                        aria-controls="collapseExample">
+                        See All Replies
+                    </a>
+                </div>
+                <div class="collapse " id="replay{{comment.id}}">
+                    {% if user.is_authenticated %}
+                    <form action="{% url 'postComment' %}" method="post">{%csrf_token%}
+                        <div class="card card-body ">
+                            <div class="form-floating">
+                                <textarea class="form-control" placeholder="Leave a comment here" style="height: 100px"
+                                    name="comment"></textarea>
+                                <label for="floatingTextarea2">Add Your Replay</label>
+                            </div>
+                            <input type="hidden" value="{{comment.id}}" name="parentSno">
+                            <input type="hidden" value="{{blog.id}}" name="bno">
+                            <input type="hidden" value="{{blog.id}}" name="postId">
+                        </div>
+                        <button class="btn btn-success sm my-3" type="submit">Send Replay</button>
+                    </form>
+                    {% endif %}
+                    <div class="mx-4">
+
+                        <div class="replies  mx-4">
+                            {% for replay in replies|get_val:comment.id %}
+                            <div class="container  m-3">
+                                <p> <b class="mx-2" style="font-family:Arial, Helvetica, sans-serif; font-size: large;">By
+                                    {{replay.user|title}}</b> {{replay.time_stamp|naturaltime }}</p>
+                                <p class="m-1 card card-body">{{replay.Comment}}</p>
+                            </div>
+                            {% endfor %}
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+    {% endfor %}
+</div>
+</div>
+
+</div>
+{% endblock %}
+
+{% block js %}
+
+{% endblock %}
